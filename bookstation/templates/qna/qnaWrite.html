@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% load static %}
+{% load humanize %}
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href={% static "images/icons/favicon.png" %}/>
 <!--===============================================================================================-->
@@ -41,7 +42,7 @@
 
 	<!-- header -->
 	<div style="height:124px">
-		{% include 'qna/top.html' %}
+		{% include 'top.html' %}
 	</div>
 
 	<!-- breadcrumb -->
@@ -79,21 +80,20 @@
 								<h3>My QnA</h3>
 								<a href="../question" class="btn type01">문의 내역보기 〉</a>
 							</div>
-							<form action="qnaWrite.do" method="post" onsubmit="return validateForm()">
+							<form action="{% url 'qnaWrite' %}" method="post" onsubmit="return validateForm()">
+								{%  csrf_token  %}
 								<table class="mp_table type01">
 									<colgroup>
 										<col width="200">
 										<col width="800">
 									</colgroup>
 									<tbody>
-										<c:forEach var="member" items="${writeList }">
 											<tr>
 												<th class="normal">아이디</th>
 												<td colspan="3" class="p10">
-													<input type="hidden" name="member_id" value="${member.member_id }">${member.member_id }
+													<input type="hidden" name="member_id" value="{{login_id}}">{{login_id}}
 												</td>
 											</tr>
-										</c:forEach>
 										<tr>
 											<th class="normal">* 질문 유형</th>
 											<td colspan="3" class="p10">
@@ -146,7 +146,7 @@
 	</section>	
 
 	<!-- Footer -->
-	{% include 'qna/bottom.html' %}
+	{% include 'bottom.html' %}
 	<!-- /Footer -->
 
 	<!-- Back to top -->
