@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect # 응답, 페이지 �
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib import auth
 
 def main(request):
     # response.sendRedirect("member/main.html");
@@ -25,12 +26,16 @@ def login(request):
         try:
             member = Member.objects.get(member_id=member_id)
             if member.member_password == member_password:
-                request.session['login'] = member_id  # 로그인 정보 session에 저장
-                return HttpResponseRedirect("../main/")  # 메인 페이지로 리디렉션 (로그인 상태)
+                request.session['login_id'] = member.member_id  # 로그인 정보 session에 저장
+                request.session['login_point'] = member.member_point  # 로그인 정보 session에 저장
+                request.session['login_grade'] = member.grade_name  # 로그인 정보 session에 저장
+                return HttpResponseRedirect("/")  # 메인 페이지로 리디렉션 (로그인 상태)
             else:
                 context = {"msg": "비밀번호가 틀립니다.", "url": "../login/"}
-                return render(request, 'main.html', context)
+                messages.error(request, '비밀번호가 틀렸습니다.')
+                return render(request, 'member/login.html', context)
         except Member.DoesNotExist:
+            messages.error(request, '아이디가 틀렸습니다.')
             return render(request, 'member/login.html', {"errormsg": "아이디가 틀립니다."})
 
 def registerSuccess(request, member_name):
@@ -152,11 +157,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-
-
-
-
-
 def info(request,id): # request은 자체 내장에서 전달받은 것임. 이것외에 전달받은 매개변수명은 처리
     try:
         # request.session['login'] => 로그인한 사람의 정보를 꺼내온다.
@@ -263,3 +263,5 @@ def list(request):
     else: # 로그아웃 상태
         context={"msg":"먼저 로그인하세요.","url":"../login/"}
         return render(request, 'alert.html',context)
+    
+

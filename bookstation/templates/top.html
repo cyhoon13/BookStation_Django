@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 {% load static %}
+{% load humanize %}
 <head>
 	<link rel="stylesheet" type="text/css" href={% static "css/top.css" %}>
 	<style>
@@ -44,22 +45,21 @@
 				<div class="content-topbar flex-sb-m h-full container">
 					<div class="left-top-bar"></div>
 					<div class="right-top-bar flex-w h-full">
-					{% comment %} <c:choose>
-						<c:when test="${not empty sessionScope.loginMember}"> {% endcomment %}
-							<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">안녕하세요 ${sessionScope.loginMember.member_id }님 :)</a>
-							<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">보유포인트 [ <fmt:formatNumber value="${sessionScope.loginMember.member_point }" pattern="#,##0"/> point ]</a>
-							<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">내등급 [ ${sessionScope.loginMember.grade_name } &nbsp;<img src="images/icons/${sessionScope.loginMember.grade_name }.png" alt="ICON-PAY" style="width: 20px;">&nbsp;]</a>
-							<a href="logout.do" class="flex-c-m trans-04 p-lr-25">로그아웃</a>
-						{% comment %} </c:when>
-						<c:otherwise> {% endcomment %}
-							<a href="login.do" class="flex-c-m trans-04 p-lr-25">로그인</a>
-							<a href="register.do" class="flex-c-m trans-04 p-lr-25">회원가입</a>
-						{% comment %} </c:otherwise>
-					</c:choose> {% endcomment %}
-						<a href="mypage.do" class="flex-c-m trans-04 p-lr-25">마이페이지</a>
-						<a href="customerService.do" class="flex-c-m trans-04 p-lr-25">고객센터</a>
-						<a href="cart.do" class="flex-c-m trans-04 p-lr-25">장바구니</a>
-						<a href="detail.do" class="flex-c-m trans-04 p-lr-25">공지사항</a>
+						{% if login_id %}
+						<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">안녕하세요 {{login_id}}님 :)</a>
+						<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">보유포인트 [ {{login_point}} point ]</a>
+						<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">내등급 [ {{login_grade}}&nbsp; 
+							<img src="{% static 'images/icons/'|add:login_grade|add:'.png' %}" alt="ICON-PAY" style="width: 20px;">&nbsp;]
+						</a>
+						<a href="{% url 'logout' %}" class="flex-c-m trans-04 p-lr-25">로그아웃</a>
+						{% else %}
+						<a href="{% url 'login' %}" class="flex-c-m trans-04 p-lr-25">로그인</a>
+						<a href="{% url 'register' %}" class="flex-c-m trans-04 p-lr-25">회원가입</a>
+						{% endif %}
+						<a href="qna/mypage" class="flex-c-m trans-04 p-lr-25">마이페이지</a>
+						<a href="qna/question" class="flex-c-m trans-04 p-lr-25">고객센터</a>
+						<a href="cart/get_cart" class="flex-c-m trans-04 p-lr-25">장바구니</a>
+						<a href="payment/payment" class="flex-c-m trans-04 p-lr-25">공지사항</a>
 					</div>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 			<div class="wrap-menu-desktop">
 				<nav class="limiter-menu-desktop container">
 					<!-- Logo desktop -->		
-					<a href="main.do" class="logo">
+					<a href="{% url 'main' %}" class="logo">
 						<img src={% static "images/icons/Logo-1.png" alt="IMG-LOGO" %}>
 					</a>
 
@@ -154,6 +154,6 @@
 	</header>
 	
 	<!-- Cart -->
-	<jsp:include page="minicart.jsp" flush="false"/>
+	{% comment %} {% include 'cart/minicart.html' %} {% endcomment %}
 	</body>
 </html>

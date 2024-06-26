@@ -77,38 +77,38 @@ $(function() {
     };
 
     // 아이디 검사
-    $("#userId").blur(function() {
-        var regex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{5,20}$/;
-        var target = $(this);
-        var memberID = $(this).val();
-        var isValid = regex.test(memberID);
-        valid.memberIDValid = isValid;
-        if (!isValid) { // 형식 위반
-            target.removeClass("valid1 invalid1 invalid2").addClass("invalid1");
-            updateNextButtonState2();
-            return;
-        }
-        $.ajax({
-            url: "checkId.do",
-            method: "get",
-            data: { member_id: memberID },
-            success: function(response) {
-                if (response == "Y") { // 사용할 수 있는 아이디
-                    valid.memberIDValid = true;
-                    target.removeClass("valid1 invalid1 invalid2").addClass("valid1");
-                } else { // 이미 있는 아이디
-                    valid.memberIDValid = false;
-                    target.removeClass("valid1 invalid1 invalid2").addClass("invalid2");
-                }
-                updateNextButtonState2();
-            },
-            error: function() { // 통신 오류
-                alert("오류가 발생했습니다.\n나중에 다시 시도해주세요.");
-                valid.memberIDValid = false;
-                updateNextButtonState2();
-            }
-        });
-    });
+    // $("#userId").blur(function() {
+    //     var regex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{5,20}$/;
+    //     var target = $(this);
+    //     var memberID = $(this).val();
+    //     var isValid = regex.test(memberID);
+    //     valid.memberIDValid = isValid;
+    //     if (!isValid) { // 형식 위반
+    //         target.removeClass("valid1 invalid1 invalid2").addClass("invalid1");
+    //         updateNextButtonState2();
+    //         return;
+    //     }
+    //     $.ajax({
+    //         url: "checkId.do",
+    //         method: "get",
+    //         data: { member_id: memberID },
+    //         success: function(response) {
+    //             if (response == "Y") { // 사용할 수 있는 아이디
+    //                 valid.memberIDValid = true;
+    //                 target.removeClass("valid1 invalid1 invalid2").addClass("valid1");
+    //             } else { // 이미 있는 아이디
+    //                 valid.memberIDValid = false;
+    //                 target.removeClass("valid1 invalid1 invalid2").addClass("invalid2");
+    //             }
+    //             updateNextButtonState2();
+    //         },
+    //         error: function() { // 통신 오류
+    //             alert("오류가 발생했습니다.\n나중에 다시 시도해주세요.");
+    //             valid.memberIDValid = false;
+    //             updateNextButtonState2();
+    //         }
+    //     });
+    // });
 
     // 비밀번호 검사
     $("#userPwd").blur(function() {
@@ -142,61 +142,61 @@ $(function() {
     });
 
     // 인증번호 이메일 전송 
-    $("#sendemailbutton").click(function() {
-        var email = $("#userEmail").val(); // 입력한 이메일
-        var checkBox = $("#emailNum"); // 인증번호 입력란
+    // $("#sendemailbutton").click(function() {
+    //     var email = $("#userEmail").val(); // 입력한 이메일
+    //     var checkBox = $("#emailNum"); // 인증번호 입력란
 
-        $.ajax({
-            type: "GET",
-            url: "mailCheck.do?email=" + email,
-            success: function(data) {
-                if (data === "fail") {
-                    alert("인증번호 발송이 실패했습니다. 이메일 주소를 확인해 주세요.");
-                } else {
-                    checkBox.attr("disabled", false);
-                    checkBox.focus();
-                    code = data;
-                    isVerified = false; // 새로운 인증번호가 발송되면 인증 상태를 초기화
-                    alert("인증번호가 발송되었습니다."); // 인증번호 발송 알림 메시지
-                }
-            },
-            error: function() {
-                alert("오류가 발생했습니다.\n나중에 다시 시도해주세요."); // 통신 에러   
-            }
-        });
-    });
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "mailCheck.do?email=" + email,
+    //         success: function(data) {
+    //             if (data === "fail") {
+    //                 alert("인증번호 발송이 실패했습니다. 이메일 주소를 확인해 주세요.");
+    //             } else {
+    //                 checkBox.attr("disabled", false);
+    //                 checkBox.focus();
+    //                 code = data;
+    //                 isVerified = false; // 새로운 인증번호가 발송되면 인증 상태를 초기화
+    //                 alert("인증번호가 발송되었습니다."); // 인증번호 발송 알림 메시지
+    //             }
+    //         },
+    //         error: function() {
+    //             alert("오류가 발생했습니다.\n나중에 다시 시도해주세요."); // 통신 에러   
+    //         }
+    //     });
+    // });
 
     // 인증번호 비교
-    $("#emailnumcheck").click(function() {
-        var inputCode = $("#emailNum").val(); // 입력코드
+    // $("#emailnumcheck").click(function() {
+    //     var inputCode = $("#emailNum").val(); // 입력코드
 
-        if (inputCode === code) { // 일치할 경우
-            alert("인증이 완료되었습니다.");
-            isVerified = true;
-        } else { // 일치하지 않을 경우
-            alert("인증에 실패했습니다. 인증번호를 다시 확인해 주세요.");
-            isVerified = false;
-        }
-        updateNextButtonState2(); // 인증 상태 변경 시에도 버튼 상태 업데이트
-    });
+    //     if (inputCode === code) { // 일치할 경우
+    //         alert("인증이 완료되었습니다.");
+    //         isVerified = true;
+    //     } else { // 일치하지 않을 경우
+    //         alert("인증에 실패했습니다. 인증번호를 다시 확인해 주세요.");
+    //         isVerified = false;
+    //     }
+    //     updateNextButtonState2(); // 인증 상태 변경 시에도 버튼 상태 업데이트
+    // });
 
-    function updateNextButtonState2() {
-        var allFilled = true;
+    // function updateNextButtonState2() {
+    //     var allFilled = true;
 
-        if ($('#userId').hasClass('invalid1') || $('#userId').hasClass('invalid2') ||
-            $('#userPwd').hasClass('invalid3') || $('#rePwd').hasClass('invalid4') ||
-            $('#userId').val() === '' || $('#userPwd').val() === '' || $('#rePwd').val() === '' ||
-            $('#userName').val() === '' || $('#birth').val() === '' || $('#userEmail').val() === '' ||
-            $('#emailNum').val() === '') {
-            allFilled = false;
-        }
+    //     if ($('#userId').hasClass('invalid1') || $('#userId').hasClass('invalid2') ||
+    //         $('#userPwd').hasClass('invalid3') || $('#rePwd').hasClass('invalid4') ||
+    //         $('#userId').val() === '' || $('#userPwd').val() === '' || $('#rePwd').val() === '' ||
+    //         $('#userName').val() === '' || $('#birth').val() === '' || $('#userEmail').val() === '' ||
+    //         $('#emailNum').val() === '') {
+    //         allFilled = false;
+    //     }
 
-        if (allFilled && isVerified && valid.isAllValid()) { // 모든 조건이 충족될 때
-            $('#nextbutton2').prop('disabled', false);
-        } else {
-            $('#nextbutton2').prop('disabled', true);
-        }
-    }
+    //     if (allFilled && isVerified && valid.isAllValid()) { // 모든 조건이 충족될 때
+    //         $('#nextbutton2').prop('disabled', false);
+    //     } else {
+    //         $('#nextbutton2').prop('disabled', true);
+    //     }
+    // }
 });
 
 // ==================================================================
