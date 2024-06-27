@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% load static %}
+{% load humanize %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
 <title>sidebar.html</title>
 </head>
@@ -18,33 +19,29 @@
 				</h4>
 				<ul>
 					<!-- 회원정보 -->
-					<c:choose>
-					<c:when test="${empty sessionScope.loginMember }">
+					{% if login_id is None %}
 					<li class="bor18">
 						<span class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
 							로그인이 필요한 서비스입니다
 						</span>
 					</li>
-					</c:when>
-					<c:otherwise>
+					{% else %}
 					<li class="bor18">
 						<span class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-							{% comment %} ${sessionScope.loginMember.member_id } {% endcomment %}
-                            조영훈 회원님
+                            {{login_id}} 회원님
 						</span>
 						<div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
 							<div class="list-group-collapse sub-men">
 								<a href="grade.do" class="list-group-item list-group-item-action"> 등급
-									<span class="Rtxt">[  &nbsp;<img src="images/icons/${sessionScope.loginMember.grade_name }.png" alt="ICON-PAY" style="width: 20px;">&nbsp;]</span>
+									<span class="Rtxt">[ {{ login_grade }}&nbsp;<img src="{% static 'images/icons/' %}{{ login_grade }}.png" alt="ICON-PAY" style="width: 20px;">&nbsp;]</span>
 								</a>
 								<span class="list-group-item list-group-item-action"> 보유포인트
-									<span class="Rtxt"><strong class="orange" style="font-size:12px;"><fmt:formatNumber value="${sessionScope.loginMember.member_point }" pattern="#,##0"/> </strong>point</span>
+									<span class="Rtxt"><strong class="orange" style="font-size:12px;">{{ login_point|intcomma }} </strong>point</span>
 								</span>
 							</div>
 						</div>
 					</li>
-					</c:otherwise>
-					</c:choose>
+					{% endif %}
 					<!-- /회원정보 -->
 					<!-- 나의 정보 -->
 					<li class="bor18">

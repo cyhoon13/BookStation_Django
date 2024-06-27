@@ -35,7 +35,7 @@
 	
 	<!-- header -->
 	<div style="height:124px">
-		{% include 'qna/top.html' %}
+		{% include 'top.html' %}
 	</div>
 	
 	<!-- breadcrumb -->
@@ -71,7 +71,7 @@
 							</div>
 							<div class="title">
 								<h3>My QnA</h3>
-								<a href="../question" class="btn type01">문의 내역보기 〉</a>
+								<a href="../../question" class="btn type01">문의 내역보기 〉</a>
 							</div>
 							<table class="mp_table type01">
 								<colgroup>
@@ -83,35 +83,31 @@
 									<col width="150">
 								</colgroup>
 								<tbody>
-									<c:forEach var="qna" items="${qnaList }">
-										<tr>
-											<th class="normal">유형</th>
-											<td class="p10">${qna.qna_type }</td>
-											<th class="normal">등록일</th>
-											<td class="p10">${qna.qna_date }</td>
-											<th class="normal">처리상태</th>
-											<td class="p10">${qna.qna_state }</td>
-										</tr>
-										<tr>
-											<th class="normal">제목</th>
-											<td colspan="5" class="p10">${qna.qna_title }</td>
-										</tr>
-										<tr height="200px">
-											<th class="normal">내용</th>
-											<td colspan="5" class="p10">${qna.qna_content }</td>
-										</tr>
-										<tr height="200px">
-											<th class="normal">답변</th>
-											<td colspan="5" class="p10" style="color:red;">아직 답변이 작성되지 않았습니다</td>
-										</tr>
-									</c:forEach>
+									<tr>
+										<th class="normal">유형</th>
+										<td class="p10">{{q.qna_type}}</td>
+										<th class="normal">등록일</th>
+										<td class="p10">{{q.qna_date}}</td>
+										<th class="normal">처리상태</th>
+										<td class="p10">{{q.qna_state}}</td>
+									</tr>
+									<tr>
+										<th class="normal">제목</th>
+										<td colspan="5" class="p10">{{q.qna_title}}</td>
+									</tr>
+									<tr height="200px">
+										<th class="normal">내용</th>
+										<td colspan="5" class="p10">{{q.qna_content}}</td>
+									</tr>
+									<tr height="200px">
+										<th class="normal">답변</th>
+										<td colspan="5" class="p10" style="color:red;">아직 답변이 작성되지 않았습니다</td>
+									</tr>
 								</tbody>
 							</table>
 							<div class="button-container">
-								<c:forEach var="qna" items="${qnaList }">
-									<button class="button"><a href="qnaUpdate.do?qna_id=${qna.qna_id }" style="color: inherit;">수정하기</a></button>
-									<button class="opposite-button" onclick="history.back()">취소</button>
-								</c:forEach>
+								<button class="button"><a href="../../qnaUpdate/{{q.qna_id}}/" style="color: inherit;">수정하기</a></button>
+								<button class="opposite-button" onclick="history.back()">취소</button>
 							</div>
 						</div>
 						<!-- /문의내역 -->
@@ -128,7 +124,7 @@
 	</section>	
 	
 	<!-- Footer -->
-	{% include 'qna/bottom.html' %}
+	{% include 'bottom.html' %}
 	<!-- /Footer -->
 
 	<!-- Back to top -->

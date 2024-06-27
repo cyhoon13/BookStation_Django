@@ -40,7 +40,7 @@
 <body>
 	<!-- header -->
 	<div style="height:124px">
-		{% include 'qna/top.html' %}
+		{% include 'top.html' %}
 	</div>
 
 	<!-- breadcrumb -->
@@ -76,54 +76,53 @@
 							</div>
 							<div class="title">
 								<h3>My QnA</h3>
-								<a href="../question" class="btn type01">문의 내역보기 〉</a>
+								<a href="../../question" class="btn type01">문의 내역보기 〉</a>
 							</div>
-							<form action="qnaUpdate.do" method="post" onsubmit="return validateForm()">
+							<form action="../../qnaUpdate/{{q.qna_id}}/" method="post" onsubmit="return validateForm()">
+								{%  csrf_token  %}
 								<table class="mp_table type01">
 									<colgroup>
 										<col width="200">
 										<col width="800">
 									</colgroup>
 									<tbody>
-										<c:forEach var="update" items="${updateList }">
-											<tr>
-												<th class="normal">아이디</th>
-												<td colspan="3" class="p10">
-													<input type="hidden" name="member_id" value="${update.member_id }">${update.member_id }
-													<input type="hidden" name="qna_id" value="${update.qna_id }">
-												</td>
-											</tr>
-											<tr>
-												<th class="normal">* 질문 유형</th>
-												<td colspan="3" class="p10">
-													<select name="qna_type">
-														<option value="1">회원정보</option>
-														<option value="2">반품/교환</option>
-														<option value="3">주문/결제</option>
-														<option value="4">배송</option>
-														<option value="5">도서/상품정보</option>
-														<option value="6">불편사항</option>
-														<option value="7">기타</option>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<th class="normal">* 제목</th>
-												<td colspan="3" class="p10">
-													<input class="input-field" type="text" id="qna_title" name="qna_title" value="${update.qna_title }" placeholder="제목을 입력해주세요">
-													<span id="titleError" class="error"></span>
-												</td>
-											</tr>
-											<tr height="300px">
-												<th class="normal">* 내용</th>
-												<td colspan="3" class="p10">
-													<textarea class="textarea-field" id="qna_content" name="qna_content" cols="80" rows="10" placeholder="내용을 입력해주세요" oninput="countCharacters()">${update.qna_content }</textarea>
-													<span id="contentError" class="error"></span>
-													<span style="float: right; margin-right: 20px;">현재 <span id="charCount">0</span> / 총 1500자</span>
-													<span class="orange">* 표시된 항목은 필수입력입니다</span>
-												</td>
-											</tr>
-										</c:forEach>
+										<tr>
+											<th class="normal">아이디</th>
+											<td colspan="3" class="p10">
+												<input type="hidden" name="member_id" value="{{q.member_id}}">{{q.member_id}}
+												<input type="hidden" name="qna_id" value="{{q.qna_id}}">
+											</td>
+										</tr>
+										<tr>
+											<th class="normal">* 질문 유형</th>
+											<td colspan="3" class="p10">
+												<select name="qna_type">
+													<option value="1">회원정보</option>
+													<option value="2">반품/교환</option>
+													<option value="3">주문/결제</option>
+													<option value="4">배송</option>
+													<option value="5">도서/상품정보</option>
+													<option value="6">불편사항</option>
+													<option value="7">기타</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th class="normal">* 제목</th>
+											<td colspan="3" class="p10">
+												<input class="input-field" type="text" id="qna_title" name="qna_title" value="{{q.qna_title}}" placeholder="제목을 입력해주세요">
+												<span id="titleError" class="error"></span>
+											</td>
+										</tr>
+										<tr height="300px">
+											<th class="normal">* 내용</th>
+											<td colspan="3" class="p10">
+												<textarea class="textarea-field" id="qna_content" name="qna_content" cols="80" rows="10" placeholder="내용을 입력해주세요" oninput="countCharacters()">{{q.qna_content}}</textarea>
+												<span id="contentError" class="error"></span>
+												<span style="float: right; margin-right: 20px;">현재 <span id="charCount">0</span> / 총 1500자</span>
+												<span class="orange">* 표시된 항목은 필수입력입니다</span>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 								<div class="button-container">
@@ -146,7 +145,7 @@
 	</section>	
 
 	<!-- Footer -->
-	{% include 'qna/bottom.html' %}
+	{% include 'bottom.html' %}
 	<!-- /Footer -->
 
 	<!-- Back to top -->

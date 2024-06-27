@@ -97,11 +97,11 @@
 											{% for qna in page_obj.object_list %}
 												<tr>
 													<td class="center bLine">{{qna.qna_date|date:"Y년 n월 j일"}}</td>
-													<td class="center bLine"><a href="qnaDetail.do?qna_id=${qna.qna_id }" class="blue">{{qna.qna_title}}</a></td>
+													<td class="center bLine"><a href="../qnaDetail/{{qna.qna_id}}/" class="blue">{{qna.qna_title}}</a></td>
 													<td class="money center bLine" style="color:#da4445;">{{qna.qna_state}}</td>
 													<td class="center bLine">
 														<button class="button">
-															<a href="qnaDelete.do?qna_id=${qna.qna_id }" style="color: inherit;">삭제</a>
+															<a href="../qnaDelete/{{qna.qna_id}}/" style="color: inherit;">삭제</a>
 														</button>
 													</td>
 												</tr>
@@ -114,13 +114,13 @@
 					</div>
 					<!-- Pagination -->
 					<div class="pagination flex-c-m flex-w w-full p-t-38">
-						<div>
+						{% comment %} <div style="margin: 5px; display: flex; align-items: center;">
 							{% if page_obj.has_previous %}
-							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page=1">맨 앞으로</a>
-							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.previous_page_number }}">이전</a>
+							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page=1"><<</a>
+							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.previous_page_number }}"><</a>
 							{% endif %}
-						</div>
-						<div>
+						</div> {% endcomment %}
+						<div style="margin: 5px; display: flex; align-items: center;">
 							{% for page in page_obj.paginator.page_range %}
 							{# 현재 페이지 번호를 포함해서 5개씩만 페이지 번호를 표시 #}
 								{% if page >= page_obj.number|add:'-2' and page <= page_obj.number|add:'2' %}
@@ -133,31 +133,40 @@
 								{% endif %}
 							{% endfor %}
 						</div>
-						<div>
+						{% comment %} <div style="margin: 5px; display: flex; align-items: center;">
 							{% if page_obj.has_next %}
-							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.next_page_number }}">다음</a>
-							<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.paginator.num_pages }}">맨 뒤로</a>
+							   <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.next_page_number }}">></a>
+							   <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?page={{ page_obj.paginator.num_pages }}">>></a>
 							{% endif %}
-						</div>
+						 </div> {% endcomment %}
 					</div>
-					{% comment %} <div class="flex-c-m flex-w w-full p-t-38">
-                        <span class="step-links">
-                            {% if page_obj.has_previous %}
-                                <a href="?page=1">&laquo; 처음</a>
-                                <a href="?page={{ page_obj.previous_page_number }}">이전</a>
-                            {% endif %}
-
-                            <span class="current">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                            </span>
-
-                            {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}">다음</a>
-                                <a href="?page={{ page_obj.paginator.num_pages }}">끝 &raquo;</a>
-                            {% endif %}
-                        </span>
-                    </div> {% endcomment %}
 					<!-- /Pagination -->
+					 <!-- Pagination -->
+					 {% comment %} <div class="flex-c-m flex-w w-full p-t-38" style="justify-content: center;">
+						<div style="margin: 5px; display: flex; align-items: center;">
+						   {% if page_obj.has_previous %}
+							  <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?pageNum=1"><<</a>
+							  <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?pageNum={{ page_obj.previous_page_number }}"><</a>
+						   {% endif %}
+						</div>
+						<div style="margin: 5px; display: flex; align-items: center;">
+						   {% for page in page_obj.paginator.page_range %}
+							  {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+								 <span class="{% if page == page_obj.number %}current{% endif %}">
+									<a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?pageNum={{ page }}">{{ page }}</a>
+								 </span>
+							  {% elif page >= page_obj.number|add:-3 and page <= page_obj.number|add:3 %}
+								 ..
+							  {% endif %}
+						   {% endfor %}
+						</div>
+						<div style="margin: 5px; display: flex; align-items: center;">
+						   {% if news.has_next %}
+							  <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?pageNum={{ page_obj.next_page_number }}">></a>
+							  <a class="flex-c-m how-pagination1 trans-04 m-all-7" href="?pageNum={{ page_obj.paginator.num_pages }}">>></a>
+						   {% endif %}
+						</div>
+					</div> {% endcomment %}
 				</div>
 				<!-- /본문 -->
 				

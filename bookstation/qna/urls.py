@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path("question/", views.question, name="question"),
     path("qnaWrite/", views.qnaWrite, name="qnaWrite"),
-    path("qnaDetail/", views.qnaDetail, name="qnaDetail"),
-    path("qnaUpdate/", views.qnaUpdate, name="qnaUpdate"),
+    path("qnaDetail/<int:qna_id>/", views.qnaDetail, name="qnaDetail"),
+    path("qnaUpdate/<int:qna_id>/", views.qnaUpdate, name="qnaUpdate"),
+    path("qnaDelete/<int:qna_id>/", views.qnaDelete, name="qnaDelete"),
 ]
