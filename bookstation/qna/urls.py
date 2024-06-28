@@ -9,4 +9,5 @@ urlpatterns = [
     path("qnaDetail/<int:qna_id>/", views.qnaDetail, name="qnaDetail"),
     path("qnaUpdate/<int:qna_id>/", views.qnaUpdate, name="qnaUpdate"),
     path("qnaDelete/<int:qna_id>/", views.qnaDelete, name="qnaDelete"),
+    path("mypage/", views.mypage, name="mypage"),
 ]
