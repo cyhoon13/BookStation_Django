@@ -88,7 +88,7 @@ def qnaDelete(request,qna_id):
     q.delete()
     return redirect("question")
 
-#마이페이지 이동
+#마이페이지 이동 
 def mypage(request):
     return render(request, 'qna/mypage.html')
 
