@@ -3,6 +3,8 @@ from .models import qna
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator #페이지 처리해주는 클래스
 from django.utils import timezone
+from .utils import check_profanity
+from django.http import JsonResponse
 # Create your views here.
 
 #문의내역
@@ -23,6 +25,33 @@ def question(request):
     return render(request, 'qna/question.html', {'page_obj': page_obj})
 
 #문의 작성하기
+# def qnaWrite(request):
+#     if request.method != 'POST':  # GET 방식
+#         member_id = request.session.get('login_id')
+#         if not member_id:
+#             return redirect('login')
+#         return render(request, "qna/qnaWrite.html", {'member_id': member_id})
+#     else:  # POST 방식
+#         member_id = request.session.get('login_id')
+#         if not member_id:
+#             return redirect('login')
+
+#         # 폼 데이터에서 값 가져오기
+#         qna_type = request.POST.get('qna_type')
+#         qna_title = request.POST.get('qna_title')
+#         qna_content = request.POST.get('qna_content')
+
+#         # qna 객체 생성 및 저장
+#         q = qna(
+#             member_id=member_id,
+#             qna_type=qna_type,
+#             qna_title=qna_title,
+#             qna_content=qna_content
+#         )
+#         q.save()  # insert, update -> save(), delete -> delete()
+
+#         return redirect('question')  # 'question' URL 이름으로 리디렉션
+
 def qnaWrite(request):
     if request.method != 'POST':  # GET 방식
         member_id = request.session.get('login_id')
@@ -39,6 +68,16 @@ def qnaWrite(request):
         qna_title = request.POST.get('qna_title')
         qna_content = request.POST.get('qna_content')
 
+        # 욕설 확인
+        if check_profanity(qna_title):
+            return render(request, "qna/qnaWrite.html", {
+                'member_id': member_id,
+                'error': '문의 제목에 욕설이 포함되어 있습니다.',
+                'qna_type': qna_type,
+                'qna_title': qna_title,
+                'qna_content': qna_content,
+            })
+
         # qna 객체 생성 및 저장
         q = qna(
             member_id=member_id,
@@ -49,6 +88,7 @@ def qnaWrite(request):
         q.save()  # insert, update -> save(), delete -> delete()
 
         return redirect('question')  # 'question' URL 이름으로 리디렉션
+
 
 #문의 세부내용
 def qnaDetail(request,qna_id):
